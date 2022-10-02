@@ -17,6 +17,7 @@ import org.walavo.bar.generate.dto.Response;
 import org.walavo.bar.generate.dto.TypeGenerator;
 import org.walavo.bar.generate.model.document.BarcodeDocument;
 import org.walavo.bar.generate.model.repository.BarcodeRepository;
+import org.walavo.bar.generate.util.ConvertImage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,11 +28,11 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static org.walavo.bar.generate.util.ConvertImage.BARCODE_TEXT_FONT;
+
 @Service
 @RequiredArgsConstructor
 public class BarcodeService implements IBarcodeService {
-
-    private static final Font BARCODE_TEXT_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
 
     private final BarcodeRepository barcodeRepository;
 
@@ -59,15 +60,13 @@ public class BarcodeService implements IBarcodeService {
         }
 
         String uuid = UUID.randomUUID().toString();
-        byte[] bytes = toByteArray(bufferedImage, "png");
+        byte[] bytes = ConvertImage.toByteArray(bufferedImage, "png");
         //encode the byte array for display purpose only, optional
         String bytesBase64 = Base64.encodeBase64String(bytes);
 
-        System.out.println(bytesBase64);
-
         // decode byte[] from the encoded string
         byte[] bytesFromDecode = Base64.decodeBase64(bytesBase64);
-        BufferedImage newBi = toBufferedImage(bytesFromDecode);
+        BufferedImage newBi = ConvertImage.toBufferedImage(bytesFromDecode);
 
         BarcodeDocument document = BarcodeDocument
                 .builder()
@@ -88,9 +87,7 @@ public class BarcodeService implements IBarcodeService {
 
     @Override
     public Mono<byte[]> getBarcode(String uuid) {
-
-        return barcodeRepository.findByUuid(uuid)
-                .map(BarcodeDocument::getBarcodeByte);
+        return barcodeRepository.findByUuid(uuid).map(BarcodeDocument::getBarcodeByte);
     }
 
     @Override
@@ -98,24 +95,4 @@ public class BarcodeService implements IBarcodeService {
         return barcodeRepository.findAll();
     }
 
-    // convert BufferedImage to byte[]
-    public static byte[] toByteArray(BufferedImage bi, String format)
-            throws IOException {
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(bi, format, baos);
-        return baos.toByteArray();
-
-    }
-
-    // convert byte[] to BufferedImage
-    public BufferedImage toBufferedImage(byte[] bytes) {
-
-        InputStream is = new ByteArrayInputStream(bytes);
-        try {
-            return ImageIO.read(is);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
