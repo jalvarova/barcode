@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "2dddcecb-0570-49b6-9dde-b079c4526028",
+		"name": "BARCODES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "BARCODE_EAN",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/barcodes/ean13?productName=123456789121",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"barcodes",
+						"ean13"
+					],
+					"query": [
+						{
+							"key": "productName",
+							"value": "123456789121"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BARCODE_EAN_BITMAP",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/barcodes/bitmap?productName=123456789121",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"barcodes",
+						"bitmap"
+					],
+					"query": [
+						{
+							"key": "productName",
+							"value": "123456789121"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BARCODE_EAN_MATRIX",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/barcodes/matrix/ean?productName=123456789121",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"barcodes",
+						"matrix",
+						"ean"
+					],
+					"query": [
+						{
+							"key": "productName",
+							"value": "123456789121"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_BARCODE",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/barcodes/image/8440d1f5-d5cc-49d2-a93d-aa53696e64b2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"barcodes",
+						"image",
+						"8440d1f5-d5cc-49d2-a93d-aa53696e64b2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BARCODES",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/barcodes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"barcodes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BARCODE_QR",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/barcodes/qr?url=https://www.google.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"barcodes",
+						"qr"
+					],
+					"query": [
+						{
+							"key": "url",
+							"value": "https://www.google.com"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
