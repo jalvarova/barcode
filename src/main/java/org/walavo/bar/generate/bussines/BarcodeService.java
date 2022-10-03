@@ -1,34 +1,22 @@
 package org.walavo.bar.generate.bussines;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.oned.EAN13Writer;
-import com.google.zxing.qrcode.QRCodeWriter;
 import lombok.RequiredArgsConstructor;
-import net.sourceforge.barbecue.Barcode;
-import net.sourceforge.barbecue.BarcodeFactory;
-import net.sourceforge.barbecue.BarcodeImageHandler;
-import org.apache.commons.codec.binary.Base64;
-import org.krysalis.barcode4j.impl.upcean.EAN13Bean;
-import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.springframework.stereotype.Service;
+import org.walavo.bar.generate.adapter.BarcodeAdapter;
 import org.walavo.bar.generate.dto.Response;
 import org.walavo.bar.generate.dto.TypeGenerator;
+import static org.walavo.bar.generate.mapper.BarcodeMapper.builder;
+
+import org.walavo.bar.generate.mapper.BarcodeMapper;
 import org.walavo.bar.generate.model.document.BarcodeDocument;
 import org.walavo.bar.generate.model.repository.BarcodeRepository;
-import org.walavo.bar.generate.util.ConvertImage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static org.walavo.bar.generate.util.ConvertImage.BARCODE_TEXT_FONT;
+import static org.walavo.bar.generate.util.ConvertImage.writeImage;
 
 @Service
 @RequiredArgsConstructor
@@ -37,52 +25,13 @@ public class BarcodeService implements IBarcodeService {
     private final BarcodeRepository barcodeRepository;
 
     @Override
-    public Mono<Response> generateBarcode(TypeGenerator typeGenerator, String productName) throws Exception {
-        BufferedImage bufferedImage;
-        if (typeGenerator == TypeGenerator.BARCODE) {
-            Barcode barcode = BarcodeFactory.createEAN13(productName);
-            barcode.setFont(BARCODE_TEXT_FONT);
-            bufferedImage = BarcodeImageHandler.getImage(barcode);
-        } else if (typeGenerator == TypeGenerator.QR) {
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = qrCodeWriter.encode(productName, BarcodeFormat.QR_CODE, 250, 250);
-            bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
-        } else if (typeGenerator == TypeGenerator.EAN13) {
-            EAN13Writer barcodeWriter = new EAN13Writer();
-            BitMatrix bitMatrix = barcodeWriter.encode(productName, BarcodeFormat.EAN_13, 300, 150);
-            bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
-        } else {
-            EAN13Bean barcodeGenerator = new EAN13Bean();
-            BitmapCanvasProvider canvas =
-                    new BitmapCanvasProvider(160, BufferedImage.TYPE_BYTE_BINARY, false, 0);
-            barcodeGenerator.generateBarcode(canvas, productName);
-            bufferedImage = canvas.getBufferedImage();
-        }
-
+    public Mono<Response> generateBarcode(TypeGenerator typeGenerator, String value) {
         String uuid = UUID.randomUUID().toString();
-        byte[] bytes = ConvertImage.toByteArray(bufferedImage, "png");
-        //encode the byte array for display purpose only, optional
-        String bytesBase64 = Base64.encodeBase64String(bytes);
-
-        // decode byte[] from the encoded string
-        byte[] bytesFromDecode = Base64.decodeBase64(bytesBase64);
-        BufferedImage newBi = ConvertImage.toBufferedImage(bytesFromDecode);
-
-        BarcodeDocument document = BarcodeDocument
-                .builder()
-                .uuid(uuid)
-                .barcodeByte(bytesFromDecode)
-                .name(typeGenerator.name())
-                .encoder(productName)
-                .date(LocalDateTime.now())
-                .build();
-
-        barcodeRepository.save(document).subscribe();
-
-        // save it somewhere
-        ImageIO.write(newBi, "png", new File("img/bar".concat("-").concat(uuid).concat(".png")));
-        Response response = Response.builder().image(bytes).build();
-        return Mono.just(response);
+        BufferedImage bufferedImage = BarcodeAdapter.getStrategy(typeGenerator).generate(value);
+        byte[] bytesDecode = writeImage(bufferedImage, uuid);
+        return barcodeRepository.save(builder(uuid, typeGenerator, value, bytesDecode))
+                .map(BarcodeDocument::getBarcodeByte)
+                .map(BarcodeMapper::applyApi);
     }
 
     @Override
@@ -94,5 +43,4 @@ public class BarcodeService implements IBarcodeService {
     public Flux<BarcodeDocument> getAllBarcode() {
         return barcodeRepository.findAll();
     }
-
 }

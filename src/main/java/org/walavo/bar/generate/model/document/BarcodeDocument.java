@@ -1,6 +1,7 @@
 package org.walavo.bar.generate.model.document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class BarcodeDocument {
 
+    @JsonIgnore
     @Id
     private String id;
 

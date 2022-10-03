@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 public interface IBarcodeService {
 
-    Mono<Response> generateBarcode(TypeGenerator typeGenerator, String productName) throws Exception;
+    Mono<Response> generateBarcode(TypeGenerator typeGenerator, String productName);
 
     Mono<byte[]> getBarcode(String uuid);
 

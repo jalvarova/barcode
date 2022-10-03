@@ -10,8 +10,6 @@ import org.walavo.bar.generate.model.document.BarcodeDocument;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.awt.image.BufferedImage;
-
 @RequestMapping("api/v1")
 @RestController
 @RequiredArgsConstructor
@@ -21,25 +19,25 @@ public class BarcodeController {
 
     @GetMapping(value = "/barcodes/ean13",
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Response> getGenerateBarcode(@RequestParam("productName") String productName) throws Exception {
+    public Mono<Response> getGenerateBarcode(@RequestParam("productName") String productName) {
         return barcodeService.generateBarcode(TypeGenerator.BARCODE, productName);
     }
 
     @GetMapping(value = "/barcodes/bitmap",
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Response> getGenerateBarcodeBitmap(@RequestParam("productName") String productName) throws Exception {
+    public Mono<Response> getGenerateBarcodeBitmap(@RequestParam("productName") String productName) {
         return barcodeService.generateBarcode(TypeGenerator.BITMAP, productName);
     }
 
     @GetMapping(value = "/barcodes/qr",
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Response> getGenerateQR(@RequestParam("url") String url) throws Exception {
+    public Mono<Response> getGenerateQR(@RequestParam("url") String url) {
         return barcodeService.generateBarcode(TypeGenerator.QR, url);
     }
 
     @GetMapping(value = "/barcodes/matrix/ean",
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Response> getGenerateEAN13(@RequestParam("productName") String productName) throws Exception {
+    public Mono<Response> getGenerateEAN13(@RequestParam("productName") String productName) {
         return barcodeService.generateBarcode(TypeGenerator.EAN13, productName);
     }
 
@@ -47,7 +45,7 @@ public class BarcodeController {
     @GetMapping(value = "/barcodes/image/{uuid}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.IMAGE_PNG_VALUE)
-    public Mono<byte[]> getBarcode(@PathVariable("uuid") String uuid) throws Exception {
+    public Mono<byte[]> getBarcode(@PathVariable("uuid") String uuid) {
         return barcodeService.getBarcode(uuid);
     }
 
@@ -55,7 +53,7 @@ public class BarcodeController {
     @GetMapping(value = "/barcodes",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<BarcodeDocument> getBarcodes() throws Exception {
+    public Flux<BarcodeDocument> getBarcodes() {
         return barcodeService.getAllBarcode();
     }
 }

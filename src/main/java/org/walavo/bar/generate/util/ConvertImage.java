@@ -1,12 +1,12 @@
 package org.walavo.bar.generate.util;
 
+import org.apache.commons.codec.binary.Base64;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.UUID;
 
 public final class ConvertImage {
 
@@ -14,6 +14,7 @@ public final class ConvertImage {
 
     /**
      * convert BufferedImage to byte[].
+     *
      * @param bi
      * @param format
      * @return byte[]
@@ -29,7 +30,8 @@ public final class ConvertImage {
     }
 
     /**
-     *  convert byte[] to BufferedImage
+     * convert byte[] to BufferedImage
+     *
      * @param bytes
      * @return BufferedImage
      */
@@ -41,5 +43,30 @@ public final class ConvertImage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Write Image
+     * @param bufferedImage
+     * @param uuid
+     * @return byte[]
+     */
+    public static byte[] writeImage(BufferedImage bufferedImage, String uuid) {
+        byte[] bytes;
+        byte[] bytesFromDecode;
+        try {
+            bytes = ConvertImage.toByteArray(bufferedImage, "png");
+            //encode the byte array for display purpose only, optional
+            String bytesBase64 = Base64.encodeBase64String(bytes);
+            // decode byte[] from the encoded string
+            bytesFromDecode = Base64.decodeBase64(bytesBase64);
+
+            BufferedImage newBi = ConvertImage.toBufferedImage(bytesFromDecode);
+            ImageIO.write(newBi, "png", new File("img/bar".concat("-").concat(uuid).concat(".png")));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return bytesFromDecode;
     }
 }
