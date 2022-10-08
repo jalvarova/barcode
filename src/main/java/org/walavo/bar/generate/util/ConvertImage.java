@@ -6,9 +6,12 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public final class ConvertImage {
+
+    private static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
 
     public static final Font BARCODE_TEXT_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
 
@@ -68,5 +71,9 @@ public final class ConvertImage {
             throw new RuntimeException(e);
         }
         return bytesFromDecode;
+    }
+
+    public static String decodeToString(byte[] bytes){
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 }

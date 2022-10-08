@@ -10,6 +10,8 @@ import org.walavo.bar.generate.model.document.BarcodeDocument;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 @RequestMapping("api/v1")
 @RestController
 @RequiredArgsConstructor
@@ -55,5 +57,19 @@ public class BarcodeController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<BarcodeDocument> getBarcodes() {
         return barcodeService.getAllBarcode();
+    }
+
+    @GetMapping(value = "/barcodes/short",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<Response> shortLink(@RequestParam("url") String url) {
+        return barcodeService.shortLink(url);
+    }
+
+    @GetMapping(value = "/barcodes/redirect/{link}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<Map<String, String>> redirectLink(@PathVariable("link") String link) {
+        return barcodeService.redirectLink(link);
     }
 }

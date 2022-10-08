@@ -14,3 +14,4 @@ API generate the Barcode of the companies of the different channels
 [Barcodes-qr](https://www.baeldung.com/java-generating-barcodes-qr-codes)
 [Mongo Reactive](https://www.baeldung.com/spring-data-mongodb-reactive)
 [Database R2bdc](https://codetinkering.com/r2dbc-reactive-database-example-in-spring/)
+[Minikube](https://minikube.sigs.k8s.io/docs/start/)
