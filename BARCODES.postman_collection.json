@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2dddcecb-0570-49b6-9dde-b079c4526028",
+		"_postman_id": "c1f3a6ab-7131-457d-aac5-6c2b7c91beaf",
 		"name": "BARCODES",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -120,7 +120,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/api/v1/barcodes/image/8440d1f5-d5cc-49d2-a93d-aa53696e64b2",
+					"raw": "http://localhost:8000/api/v1/barcodes/image/7b54d821-d68b-450e-9590-6cf03d440033",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -131,7 +131,7 @@
 						"v1",
 						"barcodes",
 						"image",
-						"8440d1f5-d5cc-49d2-a93d-aa53696e64b2"
+						"7b54d821-d68b-450e-9590-6cf03d440033"
 					]
 				}
 			},
@@ -176,7 +176,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/api/v1/barcodes/qr?url=https://www.google.com",
+					"raw": "http://localhost:8000/api/v1/barcodes/qr?url=https://fullstackopen.com/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -191,8 +191,65 @@
 					"query": [
 						{
 							"key": "url",
-							"value": "https://www.google.com"
+							"value": "https://fullstackopen.com/"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SHORT_LINK",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/barcodes/short?url=https://fullstackopen.com/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"barcodes",
+						"short"
+					],
+					"query": [
+						{
+							"key": "url",
+							"value": "https://fullstackopen.com/"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REDIRECT_URL",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/barcodes/redirect/rowzkixefn",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"barcodes",
+						"redirect",
+						"rowzkixefn"
 					]
 				}
 			},

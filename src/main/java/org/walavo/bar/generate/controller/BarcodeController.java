@@ -67,7 +67,6 @@ public class BarcodeController {
     }
 
     @GetMapping(value = "/barcodes/redirect/{link}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Map<String, String>> redirectLink(@PathVariable("link") String link) {
         return barcodeService.redirectLink(link);

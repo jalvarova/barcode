@@ -1,9 +1,11 @@
 package org.walavo.bar.generate.model.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ReactiveHashOperations;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.stereotype.Repository;
+import org.walavo.bar.generate.util.Util;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -16,24 +18,20 @@ public class CacheRedisRepository {
     private final ReactiveRedisOperations<String, String> redisOperations;
     private final ReactiveHashOperations<String, String, String> hashOperations;
 
+    @Value("${spring.cache.ttl}")
+    private Long tll;
+
     @Autowired
     public CacheRedisRepository(ReactiveRedisOperations<String, String> redisOperations) {
         this.redisOperations = redisOperations;
         this.hashOperations = redisOperations.opsForHash();
     }
-    public Mono<String> registerCache(String value) {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
 
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+    public Mono<String> registerCache(String value) {
+        String generatedString = Util.generateValue();
         return redisOperations
                 .opsForValue()
-                .set(generatedString, value, Duration.ofSeconds(60))
+                .set(generatedString, value, Duration.ofSeconds(tll))
                 .map(aLong -> generatedString);
     }
 

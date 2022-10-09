@@ -11,7 +11,9 @@ short-link: http://localhost:${APP_PORT:8000}/api/v1/barcodes/redirect
 ---
 spring:
   cache:
+    ttl: 60
     type: redis
+
   redis:
     host: ${HOST_CACHE:localhost}
     port: 6379
