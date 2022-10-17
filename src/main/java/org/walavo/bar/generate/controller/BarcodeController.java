@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.walavo.bar.generate.bussines.IBarcodeService;
 import org.walavo.bar.generate.dto.Response;
+import org.walavo.bar.generate.dto.StaticCache;
 import org.walavo.bar.generate.dto.TypeGenerator;
 import org.walavo.bar.generate.model.document.BarcodeDocument;
 import reactor.core.publisher.Flux;
@@ -66,9 +67,15 @@ public class BarcodeController {
         return barcodeService.shortLink(url);
     }
 
+    @PostMapping(value = "/barcodes/short", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<Response> shortLinkStatic(@RequestBody StaticCache body) {
+        return barcodeService.shortLinkStatic(body);
+    }
+
     @GetMapping(value = "/barcodes/redirect/{link}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Map<String, String>> redirectLink(@PathVariable("link") String link) {
         return barcodeService.redirectLink(link);
     }
 }
+

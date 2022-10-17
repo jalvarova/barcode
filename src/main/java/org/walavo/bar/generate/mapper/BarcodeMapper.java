@@ -15,8 +15,8 @@ public final class BarcodeMapper {
     @Value("${short-link}")
     private String shortLink;
 
-    private String getShortLink() {
-        return this.shortLink;
+    private String getShortLink(String value) {
+        return this.shortLink.concat("/").concat(value);
     }
 
     public static BarcodeDocument builder(String uuid, TypeGenerator typeGenerator, String value, byte[] bytes) {
@@ -40,7 +40,7 @@ public final class BarcodeMapper {
     public Response applyApi(String keyGenerate) {
         return Response
                 .builder()
-                .shortLink(getShortLink() + "/" + keyGenerate)
+                .shortLink(getShortLink(keyGenerate))
                 .build();
     }
 }

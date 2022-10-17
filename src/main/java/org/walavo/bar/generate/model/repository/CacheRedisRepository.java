@@ -5,12 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ReactiveHashOperations;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.stereotype.Repository;
-import org.walavo.bar.generate.util.Util;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Random;
+
+import static org.walavo.bar.generate.util.Util.randomString;
 
 @Repository
 public class CacheRedisRepository {
@@ -21,6 +20,18 @@ public class CacheRedisRepository {
     @Value("${spring.cache.ttl}")
     private Long tll;
 
+    private Long ttlCache;
+
+    public CacheRedisRepository ttl(Long ttl) {
+        this.ttlCache = ttl;
+        return this;
+    }
+
+    public CacheRedisRepository defaultTtl() {
+        this.ttlCache = this.tll;
+        return this;
+    }
+
     @Autowired
     public CacheRedisRepository(ReactiveRedisOperations<String, String> redisOperations) {
         this.redisOperations = redisOperations;
@@ -28,11 +39,15 @@ public class CacheRedisRepository {
     }
 
     public Mono<String> registerCache(String value) {
-        String generatedString = Util.generateValue();
+        String generatedString = randomString();
+        return saveCache(generatedString, value);
+    }
+
+    public Mono<String> saveCache(String key, String value) {
         return redisOperations
                 .opsForValue()
-                .set(generatedString, value, Duration.ofSeconds(tll))
-                .map(aLong -> generatedString);
+                .set(key, value, Duration.ofSeconds(ttlCache))
+                .map(aLong -> key);
     }
 
     public Mono<String> getCache(String key) {

@@ -120,7 +120,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/api/v1/barcodes/image/7b54d821-d68b-450e-9590-6cf03d440033",
+					"raw": "http://localhost:8000/api/v1/barcodes/image/0960216c-1534-4ce0-a253-b7579ad8ee9a",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -131,7 +131,7 @@
 						"v1",
 						"barcodes",
 						"image",
-						"7b54d821-d68b-450e-9590-6cf03d440033"
+						"0960216c-1534-4ce0-a253-b7579ad8ee9a"
 					]
 				}
 			},

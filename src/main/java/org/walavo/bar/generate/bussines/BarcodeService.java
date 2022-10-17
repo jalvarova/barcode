@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.walavo.bar.generate.adapter.BarcodeAdapter;
 import org.walavo.bar.generate.dto.Response;
+import org.walavo.bar.generate.dto.StaticCache;
 import org.walavo.bar.generate.dto.TypeGenerator;
 import org.walavo.bar.generate.mapper.BarcodeMapper;
 import org.walavo.bar.generate.model.document.BarcodeDocument;
@@ -41,7 +42,9 @@ public class BarcodeService implements IBarcodeService {
 
     @Override
     public Mono<byte[]> getBarcode(String uuid) {
-        return barcodeRepository.findByUuid(uuid).map(BarcodeDocument::getBarcodeByte);
+        return barcodeRepository
+                .findByUuid(uuid)
+                .map(BarcodeDocument::getBarcodeByte);
     }
 
     @Override
@@ -61,7 +64,16 @@ public class BarcodeService implements IBarcodeService {
         String[] arrays = link.split("/");
         String keyCache = arrays[arrays.length - 1];
         return cacheRedisRepository
+                .defaultTtl()
                 .getCache(keyCache)
                 .map(s -> Map.of("url", s));
+    }
+
+    @Override
+    public Mono<Response> shortLinkStatic(StaticCache body) {
+        return cacheRedisRepository
+                .ttl(-1L)
+                .saveCache(body.getKey(), body.getLink())
+                .map(barcodeMapper::applyApi);
     }
 }

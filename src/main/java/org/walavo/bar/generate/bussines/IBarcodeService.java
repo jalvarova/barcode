@@ -1,6 +1,7 @@
 package org.walavo.bar.generate.bussines;
 
 import org.walavo.bar.generate.dto.Response;
+import org.walavo.bar.generate.dto.StaticCache;
 import org.walavo.bar.generate.dto.TypeGenerator;
 import org.walavo.bar.generate.model.document.BarcodeDocument;
 import reactor.core.publisher.Flux;
@@ -18,4 +19,7 @@ public interface IBarcodeService {
 
     Mono<Response> shortLink(String uuid);
     Mono<Map<String, String>> redirectLink(String link);
+
+    Mono<Response> shortLinkStatic(StaticCache body);
+
 }
