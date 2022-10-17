@@ -55,6 +55,7 @@ public class BarcodeService implements IBarcodeService {
     @Override
     public Mono<Response> shortLink(String value) {
         return cacheRedisRepository
+                .defaultTtl()
                 .registerCache(value)
                 .map(barcodeMapper::applyApi);
     }
@@ -64,7 +65,6 @@ public class BarcodeService implements IBarcodeService {
         String[] arrays = link.split("/");
         String keyCache = arrays[arrays.length - 1];
         return cacheRedisRepository
-                .defaultTtl()
                 .getCache(keyCache)
                 .map(s -> Map.of("url", s));
     }
@@ -72,7 +72,7 @@ public class BarcodeService implements IBarcodeService {
     @Override
     public Mono<Response> shortLinkStatic(StaticCache body) {
         return cacheRedisRepository
-                .ttl(-1L)
+                .ttlNotExpire()
                 .saveCache(body.getKey(), body.getLink())
                 .map(barcodeMapper::applyApi);
     }

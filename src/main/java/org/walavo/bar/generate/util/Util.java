@@ -19,6 +19,6 @@ public final class Util {
     }
 
     public static String randomString() {
-        return RandomStringUtils.randomAlphabetic(8);
+        return RandomStringUtils.randomAlphabetic(8).toUpperCase();
     }
 }

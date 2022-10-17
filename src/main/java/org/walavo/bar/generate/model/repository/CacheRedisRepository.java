@@ -27,6 +27,10 @@ public class CacheRedisRepository {
         return this;
     }
 
+    public CacheRedisRepository ttlNotExpire() {
+        this.ttlCache = -1L;
+        return this;
+    }
     public CacheRedisRepository defaultTtl() {
         this.ttlCache = this.tll;
         return this;
