@@ -1,8 +1,8 @@
-# Description API Barcode
+# Description API Barcode :lock:
 
 API generate the Barcode of the companies of the different channels
 
-## Stack Technology
+## Stack Technology :call_me_hand:
 
     * String Boot + Webflux
     * Programming Reactive
@@ -12,21 +12,21 @@ API generate the Barcode of the companies of the different channels
     * Pattern Adapter
     * Pattern Builder
 
-## Mongo install docker compose
+## Mongo install docker compose :open_file_folder:
 
 ```bash
-$ cd mongo :open_file_folder:
+$ cd mongo
 $ docker-compose up -d
 ```
 
-## Redis install docker compose
+## Redis install docker compose :open_file_folder:
 
 ```bash
-$ cd redis :open_file_folder:
+$ cd redis
 $ docker-compose up -d
 ```
 
-## Build Project Spring Boot
+## Build Project Spring Boot :+1:
 
 ```bash
 ./mvnw spring-boot:run
@@ -34,7 +34,7 @@ $ docker-compose up -d
 
 ## Postman Collection 
 
-[Ruta Collection](BARCODES.postman_collection.json) :bookmark:
+[Ruta Collection](BARCODES.postman_collection.json) :open_file_folder:
 
 ### References
 

@@ -199,6 +199,38 @@
 			"response": []
 		},
 		{
+			"name": "SHORT_LINK_STATIC",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"key\": \"ptz\",\n    \"link\": \"https://platzi.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/barcodes/short",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"barcodes",
+						"short"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "SHORT_LINK",
 			"request": {
 				"method": "GET",
