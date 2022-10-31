@@ -18,8 +18,8 @@ public interface IBarcodeService {
     Flux<BarcodeDocument> getAllBarcode();
 
     Mono<Response> shortLink(String uuid);
-    Mono<Map<String, String>> redirectLink(String link);
 
     Mono<Response> shortLinkStatic(StaticCache body);
 
+    Mono<Map<String, String>> redirectLink(String link);
 }
